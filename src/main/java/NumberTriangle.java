@@ -1,5 +1,5 @@
 import java.io.*;
-
+import java.util.*;
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
  *
@@ -129,6 +129,7 @@ public class NumberTriangle {
 
 
         // TODO define any variables that you want to use to store things
+        List<List<NumberTriangle>> levels = new ArrayList<>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -141,11 +142,29 @@ public class NumberTriangle {
             System.out.println(line);
 
             // TODO process the line
+            String[] parts = line.trim().split("\\s+");
+            List<NumberTriangle> row = new ArrayList<>();
+            for (String p : parts) {
+                row.add(new NumberTriangle(Integer.parseInt(p)));
+            }
+            levels.add(row);
 
             //read the next line
             line = br.readLine();
         }
         br.close();
+        for (int i = 0; i < levels.size() - 1; i++) {
+            List<NumberTriangle> current = levels.get(i);
+            List<NumberTriangle> next = levels.get(i + 1);
+            for (int j = 0; j < current.size(); j++) {
+                current.get(j).setLeft(next.get(j));
+                current.get(j).setRight(next.get(j + 1));
+            }
+        }
+
+        if (!levels.isEmpty()) {
+            top = levels.get(0).get(0);
+        }
         return top;
     }
 
